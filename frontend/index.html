@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConsentLedger - Consent & Audit DBMS</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>ConsentLedger</h1>
+    <p>Personal Data Consent & Access Audit (MySQL + Node.js)</p>
+  </header>
+
+  <main class="grid">
+    <section class="card">
+      <h2>Add Data Subject</h2>
+      <form id="subjectForm">
+        <input placeholder="External Ref (Roll No)" id="sub_external_ref" />
+        <input placeholder="Full Name *" id="sub_full_name" required />
+        <input placeholder="DOB (YYYY-MM-DD)" id="sub_dob" />
+        <input placeholder="Email" id="sub_email" />
+        <input placeholder="Phone" id="sub_phone" />
+        <button type="submit">Create Subject</button>
+      </form>
+      <pre id="subjectResult"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Grant Consent</h2>
+      <form id="grantForm">
+        <select id="g_subject"></select>
+        <select id="g_controller"></select>
+        <select id="g_purpose"></select>
+        <input type="number" id="g_days" placeholder="Valid Days (e.g., 30)" min="1" required />
+        <input id="g_note" placeholder="Note" />
+        <button type="submit">Grant</button>
+      </form>
+      <pre id="grantResult"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Request Access</h2>
+      <form id="accessForm">
+        <select id="a_processor"></select>
+        <select id="a_subject"></select>
+        <select id="a_controller"></select>
+        <select id="a_purpose"></select>
+        <select id="a_field"></select>
+        <button type="submit">Request</button>
+      </form>
+      <pre id="accessResult"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Revoke Consent</h2>
+      <form id="revokeForm">
+        <select id="r_consent"></select>
+        <input id="r_note" placeholder="Revoke note" />
+        <button type="submit">Revoke</button>
+      </form>
+      <pre id="revokeResult"></pre>
+    </section>
+
+    <section class="card wide">
+      <h2>Audit Log (latest 200)</h2>
+      <button id="refreshAudit">Refresh Audit</button>
+      <div class="tableWrap">
+        <table id="auditTable">
+          <thead>
+            <tr>
+              <th>ID</th><th>Time</th><th>Decision</th><th>Reason</th>
+              <th>Processor</th><th>Subject</th><th>Controller</th>
+              <th>Purpose</th><th>Field</th><th>IP</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Denied Summary Report</h2>
+      <button id="refreshDenied">Refresh Report</button>
+      <div class="tableWrap">
+        <table id="deniedTable">
+          <thead>
+            <tr>
+              <th>Controller ID</th><th>Deny Reason</th><th>Denied Count</th><th>First Seen</th><th>Last Seen</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card wide">
+      <h2>Deletion Requests</h2>
+      <form id="deleteForm" class="row">
+        <select id="d_subject"></select>
+        <select id="d_controller"></select>
+        <select id="d_created_by"></select>
+        <input id="d_notes" placeholder="Notes" />
+        <button type="submit">Create Deletion Request</button>
+      </form>
+
+      <form id="completeDeleteForm" class="row">
+        <select id="d_request"></select>
+        <input id="d_complete_notes" placeholder="Completion notes" />
+        <button type="submit">Complete Request</button>
+      </form>
+
+      <pre id="deleteResult"></pre>
+      <div class="tableWrap">
+        <table id="deleteTable">
+          <thead>
+            <tr>
+              <th>ID</th><th>UID</th><th>Subject</th><th>Controller</th><th>Status</th><th>Requested</th><th>Completed</th><th>Notes</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>DBMS Project: ConsentLedger (2026-03-24)</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
